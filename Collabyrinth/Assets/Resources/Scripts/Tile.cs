@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //Player player;
+    bool exists;
+    //Player[] bridge
+    int[] pos;
 
-    // Update is called once per frame
-    void Update()
+    public Tile(int row, int col, bool ex)
     {
-        
-    }
+        pos={x,y};
+        exists=ex;
+    }    
+    public void TakeBridge()
+    {}
+    public void PutBridge()
+    {}
+    public void RemovePlayer()
+    {}
+    public void PutPlayer(){}
+    
 }
