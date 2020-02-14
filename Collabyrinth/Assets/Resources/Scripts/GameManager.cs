@@ -50,6 +50,14 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         Player p = players[curPlayer];
+        int bridgesOwned = 0;
+        foreach (Bridge b in bridges)
+        {
+            if (b.getPlayer().Equals(p))
+            {
+                bridgesOwned++;
+            }
+        }
         if (p.points > 3)
         {
             Debug.Log(players[curPlayer] + "wins");
@@ -59,6 +67,27 @@ public class GameManager : MonoBehaviour
         {
             if (bridgePlacingPhase)
             {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out hit, 100.0f))
+                    {
+                        if (hit.transform.gameObject.tag.Equals("Bridge"))
+                        {
+                            GameObject g = hit.transform.gameObject;
+                            foreach (Bridge b in bridges)
+                            {
+                                if (b.bridge.Equals(g) && b.getPlayer().Equals(p))
+                                {
+                                    Destroy(g);
+                                    bridges.Remove(b);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else
             {
