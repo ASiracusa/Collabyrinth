@@ -7,7 +7,7 @@ public class Player
     int playerNum;
     int points;
     Tile location;
-    Tile goal
+    Tile goal;
 
     public Player(int playerNum, Tile location)
     {

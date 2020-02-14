@@ -34,17 +34,5 @@ public class Tile
         return false;
 
     }
-    public void RemovePlayer()
-    {
-        player=null;
-    }
-    public bool PutPlayer(Player newPl)
-    {
-        if(player==null){
-            player = newPl;
-            return true;
-        }
-        return false;
-    }
     
 }
