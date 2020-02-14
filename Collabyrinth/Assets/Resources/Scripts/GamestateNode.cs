@@ -22,7 +22,7 @@ public class GamestateNode : IComparable<GamestateNode>
         {
             for (int j = 0; j < length; j++)
             {
-                board[i, j] = new Tile(i, j, true, null);
+                board[i, j] = new Tile(i, j, true);
             }
         }
     }
