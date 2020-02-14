@@ -44,7 +44,7 @@
 				float4 col = tex2D(_MainTex, i.uv);
 				float4 surroundings = float4(0, 0, 0, 0);
 
-				if (length(col - tex2D(_MainTex, i.uv + 0.002)) > 0.01) {
+				if (length(col - tex2D(_MainTex, i.uv + 0.002)) > 0.05) {
 					col = 0;
 				}
 
