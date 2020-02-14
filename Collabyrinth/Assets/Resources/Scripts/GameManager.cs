@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         Player p = players[curPlayer];
-        if (p.points > 3) { 
+        if (p.points > 3)
+        {
             Debug.Log(players[curPlayer] + "wins");
 
         }
@@ -58,9 +59,6 @@ public class GameManager : MonoBehaviour
         {
             if (bridgePlacingPhase)
             {
-
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
-                    bridgePlacingPhase = false;
             }
             else
             {
@@ -113,3 +111,4 @@ public class GameManager : MonoBehaviour
         }
 
     }
+}
