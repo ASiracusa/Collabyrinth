@@ -4,35 +4,23 @@ using UnityEngine;
 
 public class Tile
 {
-    public bool exists;
-    public Player[] bridge;
-    public int[] pos;
-    public readonly int UP = 0;
-    public readonly int RIGHT= 1;
-    public readonly int DOWN= 2;
-    public readonly int LEFT= 3;
+    private int x;
 
-    public Tile(int row, int col, bool ex)
+    private int y;
+    private Bridge[] bridges;
+
+    public Tile(int ix, int iy)
     {
-        pos= new int[] {row, col};
-        exists=ex;
-        bridge= new Player[4];
-    }    
-    public bool TakeBridge(int pos)
-    {
-        if(bridge[pos]==null)
-            return false;
-        bridge[pos]=null;
-        return true;
-    }
-    public bool PutBridge(int pos, Player briPl)
-    {
-        if(bridge[pos]==null){
-            bridge[pos]=briPl;
-            return true;
-        }
-        return false;
+        x = ix;
+        y = iy;
+        bridges = new Bridge[4];
 
     }
-    
+    //Creates a tile and sets its coordinates.The Bridges are set in the second go around of the Gameboard.
+
+    public void setBridge(int direction, Bridge bridge)
+    {
+        bridges[direction] = bridge;
+    }
+    //Sets the bridge spot to the given Bridge.Should be called next to the paired Tile.
 }
