@@ -29,15 +29,15 @@ public class GameManager : MonoBehaviour
         }
         players = new Player[numPlayers];
         players[0] = new Player(0, map[0, 0], Instantiate(player, new Vector3(0, 1, 0), Quaternion.identity));
-        if (players.Length > 2)
+        if (players.Length >= 2)
         {
             players[1] = new Player(1, map[x, y], Instantiate(player, new Vector3(x * 2, 1, y * 2), Quaternion.identity));
         }
-        if (players.Length > 3)
+        if (players.Length >= 3)
         {
             players[2] = new Player(2, map[0, y], Instantiate(player, new Vector3(0, 1, y * 2), Quaternion.identity));
         }
-        if (players.Length > 4)
+        if (players.Length >= 4)
         {
             players[3] = new Player(3, map[x, 0], Instantiate(player, new Vector3(x * 2, 1, 0), Quaternion.identity));
         }
@@ -193,25 +193,25 @@ public class GameManager : MonoBehaviour
         // a) connected by a bridge and
         // b) not already visited
         // After all is done, all of the connected Tiles will be in validTiles
-        if (map[tile.x, tile.y].bridges[0].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y - 1].encountered)
+        if (map[tile.x, tile.y].bridges[0].GetComponent<MeshRenderer>().enabled && y!=0 && !map[tile.x, tile.y - 1].encountered)
         {
             map[tile.x, tile.y - 1].predecessor = 2;
             CheckPath(map[tile.x, tile.y - 1], validTiles);
         }
 
-        if (map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && !map[tile.x + 1, tile.y].encountered)
+        if (map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && x!=tile.x=1 && !map[tile.x + 1, tile.y].encountered)
         {
             map[tile.x + 1, tile.y].predecessor = 3;
             CheckPath(map[tile.x + 1, tile.y], validTiles);
         }
 
-        if (map[tile.x, tile.y].bridges[2].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y + 1].encountered)
+        if (map[tile.x, tile.y].bridges[2].GetComponent<MeshRenderer>().enabled && y!=tile.y=1 && !map[tile.x, tile.y + 1].encountered)
         {
             map[tile.x, tile.y + 1].predecessor = 0;
             CheckPath(map[tile.x, tile.y + 1], validTiles);
         }
 
-        if (map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && !map[tile.x - 1, tile.y].encountered)
+        if (map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && x!=0 && !map[tile.x - 1, tile.y].encountered)
         {
             map[tile.x - 1, tile.y].predecessor = 1;
             CheckPath(map[tile.x - 1, tile.y], validTiles);
