@@ -19,7 +19,7 @@ public class Player
         numBridges=3;
         points=0;
     }
-    public AddPoints()
+    public void AddPoints()
     {
         points++;
     }
