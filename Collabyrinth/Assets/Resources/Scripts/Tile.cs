@@ -6,14 +6,16 @@ public class Tile
 {
     public int x;
     public int y;
+    public GameObject tile;
     public GameObject[] bridges;
     public bool encountered;
     public int predecessor;
 
-    public Tile(int ix, int iy)
+    public Tile(int ix, int iy, GameObject tile)
     {
         x = ix;
         y = iy;
+        this.tile = tile;
         bridges = new GameObject[4];
         encountered = false;
 

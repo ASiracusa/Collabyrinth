@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     private List<Bridge> bridges;
     private int curPlayer;
     private bool bridgePlacingPhase;
+    private List<Tile> validTiles;
+    private int bridgesOwned;
 
     void Start()
     {
@@ -23,23 +25,22 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < y; j++)
             {
-                map[i, j] = new Tile(i, j);
-                Instantiate(tile, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
+                map[i, j] = new Tile(i, j, Instantiate(tile, new Vector3(i * 2, 0, j * 2), Quaternion.identity));
             }
         }
         players = new Player[numPlayers];
         players[0] = new Player(0, map[0, 0], Instantiate(player, new Vector3(0, 1, 0), Quaternion.identity));
         if (players.Length >= 2)
         {
-            players[1] = new Player(1, map[x, y], Instantiate(player, new Vector3(x * 2, 1, y * 2), Quaternion.identity));
+            players[1] = new Player(1, map[x - 1, y - 1], Instantiate(player, new Vector3(x * 2, 1, y * 2), Quaternion.identity));
         }
         if (players.Length >= 3)
         {
-            players[2] = new Player(2, map[0, y], Instantiate(player, new Vector3(0, 1, y * 2), Quaternion.identity));
+            players[2] = new Player(2, map[0, y - 1], Instantiate(player, new Vector3(0, 1, y * 2), Quaternion.identity));
         }
         if (players.Length >= 4)
         {
-            players[3] = new Player(3, map[x, 0], Instantiate(player, new Vector3(x * 2, 1, 0), Quaternion.identity));
+            players[3] = new Player(3, map[x - 1, 0], Instantiate(player, new Vector3(x * 2, 1, 0), Quaternion.identity));
         }
 
 
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         Player p = players[curPlayer];
-        int bridgesOwned = 0;
+        bridgesOwned = 0;
         foreach (Bridge b in bridges)
         {
             if (b.getPlayer().Equals(p))
@@ -121,10 +122,11 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.E) && bridgesOwned == 3)
                 {
                     bridgePlacingPhase = false;
                     Debug.Log("Switched to movement");
+                    validTiles = CheckPath(players[curPlayer].location, new List<Tile>());
                 }
             }
             else
@@ -166,6 +168,27 @@ public class GameManager : MonoBehaviour
                         //p.goal = new Tile()
                     }
                 }*/
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out hit, 100.0f))
+                    {
+                        if (hit.transform.gameObject.tag.Equals("Tile"))
+                        {
+                            GameObject g = hit.transform.gameObject;
+                            foreach (Tile t in validTiles)
+                            {
+                                if (t.tile.Equals(g))
+                                {
+                                    p.location = t;
+                                    p.player.transform.position = new Vector3(t.x * 2, p.player.transform.position.y, t.y * 2);
+                                }
+                            }
+                        }
+                    }
+                }
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     bridgePlacingPhase = true;
@@ -175,15 +198,13 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Next player, switched to bridges");
                 }
 
-                CheckPath(players[curPlayer].location, new List<Tile>());
-                
             }
 
         }
 
     }
 
-    private void CheckPath (Tile tile, List<Tile> validTiles)
+    private List<Tile> CheckPath (Tile tile, List<Tile> validTiles)
     {
 
         // Add this current tile to the list of possible tiles to move to
@@ -195,34 +216,35 @@ public class GameManager : MonoBehaviour
         // a) connected by a bridge and
         // b) not already visited
         // After all is done, all of the connected Tiles will be in validTiles
-        if (y!=0 &&map[tile.x, tile.y].bridges[0] != null && map[tile.x, tile.y].bridges[0].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y - 1].encountered)
+        if (tile.y!=0 && map[tile.x, tile.y].bridges[0] != null && map[tile.x, tile.y].bridges[0].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y - 1].encountered)
 
         {
             map[tile.x, tile.y - 1].predecessor = 2;
             CheckPath(map[tile.x, tile.y - 1], validTiles);
         }
 
-        if (x!=tile.x=1 && map[tile.x, tile.y].bridges[1] != null && map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && !map[tile.x + 1, tile.y].encountered)
+        if (tile.x!=x-1 && map[tile.x, tile.y].bridges[1] != null && map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && !map[tile.x + 1, tile.y].encountered)
 
         {
             map[tile.x + 1, tile.y].predecessor = 3;
             CheckPath(map[tile.x + 1, tile.y], validTiles);
         }
 
-        if (y!=tile.y=1 && map[tile.x, tile.y].bridges[2] != null && map[tile.x, tile.y].bridges[2].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y + 1].encountered)
+        if (tile.y!=y-1 && map[tile.x, tile.y].bridges[2] != null && map[tile.x, tile.y].bridges[2].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y + 1].encountered)
 
         {
             map[tile.x, tile.y + 1].predecessor = 0;
             CheckPath(map[tile.x, tile.y + 1], validTiles);
         }
 
-        if (x!=0 && map[tile.x, tile.y].bridges[3] != null && map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && !map[tile.x - 1, tile.y].encountered)
+        if (tile.x!=0 && map[tile.x, tile.y].bridges[3] != null && map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && !map[tile.x - 1, tile.y].encountered)
 
         {
             map[tile.x - 1, tile.y].predecessor = 1;
             CheckPath(map[tile.x - 1, tile.y], validTiles);
         }
-
-
+        foreach (Tile t in validTiles)
+            Debug.Log(t.x + ", " + t.y);
+        return validTiles;
     }
 }

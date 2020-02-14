@@ -17,4 +17,9 @@ public class Player
         this.location = location;
         player = g;
     }
+
+    public void setGoal(Tile goal)
+    {
+        this.goal = goal;
+    }
 }
