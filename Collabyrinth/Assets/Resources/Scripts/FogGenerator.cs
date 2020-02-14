@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class FogGenerator : MonoBehaviour
 {
-    public float vertDistance = 1f;
-    public int gridSize = 20;
+    public float vertDistance;
+    public int gridSize;
+    public int randomStart;
 
     private MeshFilter filter;
 
     public void Start()
     {
-
+        randomStart = Random.Range(0, 10);
         filter = GetComponent<MeshFilter>();
         filter.mesh = LoadFog();
 
@@ -64,4 +65,20 @@ public class FogGenerator : MonoBehaviour
         return mesh;
     }
 
+    private void Update()
+    {
+        Vector3[] updatedVerts = filter.mesh.vertices;
+        int sideLength = (int)(Mathf.Sqrt(filter.mesh.vertices.Length));
+
+        for (int x = 0; x < sideLength; x++)
+        {
+            for (int y = 0; y < sideLength; y++)
+            {
+                updatedVerts[y * sideLength + x].y = Mathf.PerlinNoise((randomStart + Time.time / 10 + x / 3) / 2.5f, (randomStart + Time.time / 10 + y / 3) / 2.5f);
+            }
+        }
+
+        filter.mesh.vertices = updatedVerts;
+    }
+    
 }
