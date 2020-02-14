@@ -192,6 +192,8 @@ public class GameManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     bridgePlacingPhase = true;
+                    foreach(Tile t in validTiles)
+                        t.encountered=false;
                     curPlayer++;
                     if (curPlayer > numPlayers - 1)
                         curPlayer = 0;
@@ -223,7 +225,7 @@ public class GameManager : MonoBehaviour
             CheckPath(map[tile.x, tile.y - 1], validTiles);
         }
 
-        if (tile.x!=x-1 && map[tile.x, tile.y].bridges[1] != null && map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && !map[tile.x + 1, tile.y].encountered)
+        if (tile.x!=x-1 && map[tile.x, tile.y].bridges[3] != null && map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && !map[tile.x + 1, tile.y].encountered)
 
         {
             map[tile.x + 1, tile.y].predecessor = 3;
@@ -237,14 +239,14 @@ public class GameManager : MonoBehaviour
             CheckPath(map[tile.x, tile.y + 1], validTiles);
         }
 
-        if (tile.x!=0 && map[tile.x, tile.y].bridges[3] != null && map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && !map[tile.x - 1, tile.y].encountered)
+        if (tile.x!=0 && map[tile.x, tile.y].bridges[1] != null && map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && !map[tile.x - 1, tile.y].encountered)
 
         {
             map[tile.x - 1, tile.y].predecessor = 1;
             CheckPath(map[tile.x - 1, tile.y], validTiles);
         }
-        foreach (Tile t in validTiles)
-            Debug.Log(t.x + ", " + t.y);
+        
+        Debug.Log(tile.x + ", " + tile.y);
         return validTiles;
     }
 }
