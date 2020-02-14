@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -30,17 +32,26 @@ public class GameManager : MonoBehaviour
         }
         players = new Player[numPlayers];
         players[0] = new Player(0, map[0, 0], Instantiate(player, new Vector3(0, 1, 0), Quaternion.identity));
+        curPlayer = 0;
+        SetNewGoal();
+        Debug.Log(players[0].goal.x + "," + players[0].goal.y);
         if (players.Length >= 2)
         {
             players[1] = new Player(1, map[x - 1, y - 1], Instantiate(player, new Vector3(x * 2, 1, y * 2), Quaternion.identity));
+            curPlayer = 1;
+            SetNewGoal();
         }
         if (players.Length >= 3)
         {
             players[2] = new Player(2, map[0, y - 1], Instantiate(player, new Vector3(0, 1, y * 2), Quaternion.identity));
+            curPlayer = 2;
+            SetNewGoal();
         }
         if (players.Length >= 4)
         {
             players[3] = new Player(3, map[x - 1, 0], Instantiate(player, new Vector3(x * 2, 1, 0), Quaternion.identity));
+            curPlayer = 3;
+            SetNewGoal();
         }
 
 
@@ -74,11 +85,14 @@ public class GameManager : MonoBehaviour
     {
         Player p = players[curPlayer];
         bridgesOwned = 0;
-        foreach (Bridge b in bridges)
+        if (bridges.Count > 0)
         {
-            if (b.getPlayer().Equals(p))
+            foreach (Bridge b in bridges)
             {
-                bridgesOwned++;
+                if (b.getPlayer().Equals(p))
+                {
+                    bridgesOwned++;
+                }
             }
         }
         if (p.points > 3)
@@ -191,6 +205,11 @@ public class GameManager : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    if (p.location.Equals(p.goal))
+                    {
+                       p.points++;
+                        SetNewGoal();
+                    }
                     bridgePlacingPhase = true;
                     curPlayer++;
                     if (curPlayer > numPlayers - 1)
@@ -246,5 +265,19 @@ public class GameManager : MonoBehaviour
         foreach (Tile t in validTiles)
             Debug.Log(t.x + ", " + t.y);
         return validTiles;
+    }
+
+    public void SetNewGoal()
+    {
+        System.Random r = new System.Random();
+        int randx = r.Next(0, map.Length/y);
+        int randy = r.Next(0, map.Length/x);
+        while (randx == players[curPlayer].location.x && randy == players[curPlayer].location.y)
+        {
+            randx = r.Next(0, map.Length/y);
+            randy = r.Next(0, map.Length/x);
+        }
+
+        players[curPlayer].SetGoal(map[randx, randy]);
     }
 }

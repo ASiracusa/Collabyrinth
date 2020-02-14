@@ -18,8 +18,9 @@ public class Player
         player = g;
     }
 
-    public void setGoal(Tile goal)
+    public void SetGoal(Tile goal)
     {
         this.goal = goal;
     }
+
 }
