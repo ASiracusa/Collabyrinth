@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
             {
                 GameObject g = Instantiate(bridge, new Vector3(i * 2, .5f, j * 2 + 1), Quaternion.identity);
                 g.GetComponent<MeshRenderer>().enabled = false;
+                map[i, j].bridges[2] = g;
+                map[i, j + 1].bridges[0] = g;
             }
         }
         for (int i = 0; i < y; i++)
@@ -57,6 +59,8 @@ public class GameManager : MonoBehaviour
             {
                 GameObject g = Instantiate(bridge, new Vector3(j * 2 + 1, .5f, i * 2), Quaternion.Euler(0, 90, 0));
                 g.GetComponent<MeshRenderer>().enabled = false;
+                map[j, i].bridges[3] = g;
+                map[j + 1, i].bridges[1] = g;
             }
         }
 

@@ -6,13 +6,13 @@ public class Tile
 {
     public int x;
     public int y;
-    public Bridge[] bridges;
+    public GameObject[] bridges;
 
     public Tile(int ix, int iy)
     {
         x = ix;
         y = iy;
-        bridges = new Bridge[4];
+        bridges = new GameObject[4];
 
     }
     //Creates a tile and sets its coordinates.The Bridges are set in the second go around of the Gameboard.
