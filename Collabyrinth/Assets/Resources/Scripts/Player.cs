@@ -9,6 +9,7 @@ public class Player
     public string name;
     public int[] goal;
     public int numBridges;
+    public int points;
     public Player(int xPos, int yPos, bool AI, string name, int goalX, int goalY)
     {
         pos=new int[xPos,yPos];
@@ -16,6 +17,11 @@ public class Player
         this.name=name;
         goal=new int[goalX,goalY];
         numBridges=3;
+        points=0;
     }
-    
+    public AddPoints()
+    {
+        points++;
+    }
+
 }
