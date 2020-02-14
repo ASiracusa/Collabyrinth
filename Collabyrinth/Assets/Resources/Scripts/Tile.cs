@@ -7,11 +7,14 @@ public class Tile
     public int x;
     public int y;
     public Bridge[] bridges;
+    public bool encountered;
+    public int predecessor;
 
     public Tile(int ix, int iy)
     {
         x = ix;
         y = iy;
+        encountered = false;
         bridges = new Bridge[4];
 
     }
