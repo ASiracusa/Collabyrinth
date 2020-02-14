@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
         System.Random r = new System.Random();
         int randx = r.Next(0, map.Length/y);
         int randy = r.Next(0, map.Length/x);
-        while (randx == players[curPlayer].location.x && randy == players[curPlayer].location.y)
+        while (Math.Abs(randx - players[curPlayer].location.x) + Math.Abs(randy - players[curPlayer].location.y) <= 1)
         {
             randx = r.Next(0, map.Length/y);
             randy = r.Next(0, map.Length/x);
