@@ -7,17 +7,20 @@ public class Tile
     public int x;
     public int y;
     public GameObject[] bridges;
+    public bool encountered;
+    public int predecessor;
 
     public Tile(int ix, int iy)
     {
         x = ix;
         y = iy;
         bridges = new GameObject[4];
+        encountered = false;
 
     }
     //Creates a tile and sets its coordinates.The Bridges are set in the second go around of the Gameboard.
 
-    public void setBridge(int direction, Bridge bridge)
+    public void setBridge(int direction, GameObject bridge)
     {
         bridges[direction] = bridge;
     }
