@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public int x;
+    public int y;
     public GameObject tile;
     public GameObject player;
     public GameObject bridge;
@@ -16,8 +18,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        int x = 5;
-        int y = 5;
         map = new Tile[x, y];
         for (int i = 0; i < x; i++)
         {
@@ -40,6 +40,24 @@ public class GameManager : MonoBehaviour
         if (players.Length > 4)
         {
             players[3] = new Player(3, map[x, 0], Instantiate(player, new Vector3(x * 2, 1, 0), Quaternion.identity));
+        }
+
+
+        for (int i = 0; i < x; i++)
+        {
+            for (int j = 0; j < y - 1; j++)
+            {
+                GameObject g = Instantiate(bridge, new Vector3(i * 2, .5f, j * 2 + 1), Quaternion.identity);
+                g.GetComponent<MeshRenderer>().enabled = false;
+            }
+        }
+        for (int i = 0; i < y; i++)
+        {
+            for (int j = 0; j < x - 1; j++)
+            {
+                GameObject g = Instantiate(bridge, new Vector3(j * 2 + 1, .5f, i * 2), Quaternion.Euler(0, 90, 0));
+                g.GetComponent<MeshRenderer>().enabled = false;
+            }
         }
 
         bridges = new List<Bridge>();
@@ -73,16 +91,31 @@ public class GameManager : MonoBehaviour
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out hit, 100.0f))
                     {
+                        Debug.Log("Hit Something");
                         if (hit.transform.gameObject.tag.Equals("Bridge"))
                         {
+                            Debug.Log("It was a bridge");
                             GameObject g = hit.transform.gameObject;
-                            foreach (Bridge b in bridges)
+                            if (!g.GetComponent<MeshRenderer>().enabled)
                             {
-                                if (b.bridge.Equals(g) && b.getPlayer().Equals(p))
+                                if (bridgesOwned < 3)
                                 {
-                                    Destroy(g);
-                                    bridges.Remove(b);
-                                    break;
+                                    Debug.Log("Dropping a bridge here");
+                                    g.GetComponent<MeshRenderer>().enabled = true;
+                                    bridges.Add(new Bridge(p, g));
+                                }
+                            }
+                            else
+                            {
+                                foreach (Bridge b in bridges)
+                                {
+                                    if (b.bridge.Equals(g) && (b.getPlayer().Equals(p)))
+                                    {
+                                        Debug.Log("Picking up my bridge");
+                                        g.GetComponent<MeshRenderer>().enabled = false;
+                                        bridges.Remove(b);
+                                        break;
+                                    }
                                 }
                             }
                         }
