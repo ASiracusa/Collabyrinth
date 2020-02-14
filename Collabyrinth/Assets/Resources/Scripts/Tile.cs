@@ -23,6 +23,8 @@ public class Tile
     }
     //Sets the bridge spot to the given Bridge.Should be called next to the paired Tile.
 
+
+
     /*
     public Bridge getBridge(int direction)
     {

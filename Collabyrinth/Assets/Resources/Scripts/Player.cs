@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Player
 {
-    int playerNum;
-    int points;
-    Tile location;
-    Tile goal;
+    public int playerNum;
+    public int points;
+    public Tile location;
+    public Tile goal;
 
     public Player(int playerNum, Tile location)
     {
