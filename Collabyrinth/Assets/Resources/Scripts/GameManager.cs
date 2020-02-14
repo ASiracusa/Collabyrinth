@@ -67,16 +67,16 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Player p = players[curPlayer];
+        Player currPlayer = players[curPlayer];
         int bridgesOwned = 0;
-        foreach (Bridge b in bridges)
+        foreach (Bridge currBridge in bridges)
         {
-            if (b.getPlayer().Equals(p))
+            if (currBridge.getPlayer().Equals(currPlayer))
             {
                 bridgesOwned++;
             }
         }
-        if (p.points > 3)
+        if (currPlayer.points > 3)
         {
             Debug.Log(players[curPlayer] + "wins");
 
@@ -102,14 +102,14 @@ public class GameManager : MonoBehaviour
                                 {
                                     Debug.Log("Dropping a bridge here");
                                     g.GetComponent<MeshRenderer>().enabled = true;
-                                    bridges.Add(new Bridge(p, g));
+                                    bridges.Add(new Bridge(currPlayer, g));
                                 }
                             }
                             else
                             {
                                 foreach (Bridge b in bridges)
                                 {
-                                    if (b.bridge.Equals(g) && (b.getPlayer().Equals(p)))
+                                    if (b.bridge.Equals(g) && (b.getPlayer().Equals(currPlayer)))
                                     {
                                         Debug.Log("Picking up my bridge");
                                         g.GetComponent<MeshRenderer>().enabled = false;
@@ -125,39 +125,39 @@ public class GameManager : MonoBehaviour
             else
             {
 
-                if (Input.GetKeyDown(KeyCode.W) && p.location.bridges[0] != null)
+                if (Input.GetKeyDown(KeyCode.W) && currPlayer.location.bridges[0] != null)
                 {
-                    p.location = map[p.location.x, p.location.y - 1];
-                    if (p.goal.Equals(p.location))
+                    currPlayer.location = map[currPlayer.location.x, currPlayer.location.y - 1];
+                    if (currPlayer.goal.Equals(currPlayer.location))
                     {
-                        p.points++;
+                        currPlayer.points++;
                         //p.goal = new Tile()
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.D) && p.location.bridges[1] != null)
+                if (Input.GetKeyDown(KeyCode.D) && currPlayer.location.bridges[1] != null)
                 {
-                    p.location = map[p.location.x + 1, p.location.y];
-                    if (p.goal.Equals(p.location))
+                    currPlayer.location = map[currPlayer.location.x + 1, currPlayer.location.y];
+                    if (currPlayer.goal.Equals(currPlayer.location))
                     {
-                        p.points++;
+                        currPlayer.points++;
                         //p.goal = new Tile()
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.S) && p.location.bridges[2] != null)
+                if (Input.GetKeyDown(KeyCode.S) && currPlayer.location.bridges[2] != null)
                 {
-                    p.location = map[p.location.x, p.location.y + 1];
-                    if (p.goal.Equals(p.location))
+                    currPlayer.location = map[currPlayer.location.x, currPlayer.location.y + 1];
+                    if (currPlayer.goal.Equals(currPlayer.location))
                     {
-                        p.points++;
+                        currPlayer.points++;
                         //p.goal = new Tile()
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.A) && p.location.bridges[3] != null)
+                if (Input.GetKeyDown(KeyCode.A) && currPlayer.location.bridges[3] != null)
                 {
-                    p.location = map[p.location.x - 1, p.location.y];
-                    if (p.goal.Equals(p.location))
+                    currPlayer.location = map[currPlayer.location.x - 1, currPlayer.location.y];
+                    if (currPlayer.goal.Equals(currPlayer.location))
                     {
-                        p.points++;
+                        currPlayer.points++;
                         //p.goal = new Tile()
                     }
                 }
