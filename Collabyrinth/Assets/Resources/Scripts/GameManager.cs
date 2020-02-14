@@ -69,108 +69,113 @@ public class GameManager : MonoBehaviour
     {
         Player currPlayer = players[curPlayer];
         int bridgesOwned = 0;
-        foreach (Bridge currBridge in bridges)
-        {
-            if (currBridge.getPlayer().Equals(currPlayer))
-            {
-                bridgesOwned++;
-            }
-        }
-        if (currPlayer.points > 3)
-        {
-            Debug.Log(players[curPlayer] + "wins");
 
-        }
-        else
-        {
-            if (bridgePlacingPhase)
+        foreach (Bridge currBridge in bridges)
+            if (bridges.Count > 0)
             {
-                if (Input.GetMouseButtonDown(0))
+                foreach (Bridge b in bridges)
                 {
-                    RaycastHit hit;
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, 100.0f))
+                    if (currBridge.getPlayer().Equals(currPlayer))
                     {
-                        Debug.Log("Hit Something");
-                        if (hit.transform.gameObject.tag.Equals("Bridge"))
+                        bridgesOwned++;
+                    }
+                }
+
+                if (currPlayer.points > 3)
+                {
+                    Debug.Log(players[curPlayer] + "wins");
+                }
+                else
+                {
+                    if (bridgePlacingPhase)
+                    {
+                        if (Input.GetMouseButtonDown(0))
                         {
-                            Debug.Log("It was a bridge");
-                            GameObject g = hit.transform.gameObject;
-                            if (!g.GetComponent<MeshRenderer>().enabled)
+                            RaycastHit hit;
+                            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                            if (Physics.Raycast(ray, out hit, 100.0f))
                             {
-                                if (bridgesOwned < 3)
+                                Debug.Log("Hit Something");
+                                if (hit.transform.gameObject.tag.Equals("Bridge"))
                                 {
-                                    Debug.Log("Dropping a bridge here");
-                                    g.GetComponent<MeshRenderer>().enabled = true;
-                                    bridges.Add(new Bridge(currPlayer, g));
-                                }
-                            }
-                            else
-                            {
-                                foreach (Bridge b in bridges)
-                                {
-                                    if (b.bridge.Equals(g) && (b.getPlayer().Equals(currPlayer)))
+                                    Debug.Log("It was a bridge");
+                                    GameObject g = hit.transform.gameObject;
+                                    if (!g.GetComponent<MeshRenderer>().enabled)
                                     {
-                                        Debug.Log("Picking up my bridge");
-                                        g.GetComponent<MeshRenderer>().enabled = false;
-                                        bridges.Remove(b);
-                                        break;
+                                        if (bridgesOwned < 3)
+                                        {
+                                            Debug.Log("Dropping a bridge here");
+                                            g.GetComponent<MeshRenderer>().enabled = true;
+                                            bridges.Add(new Bridge(currPlayer, g));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (Bridge b in bridges)
+                                        {
+                                            if (b.bridge.Equals(g) && (b.getPlayer().Equals(currPlayer)))
+                                            {
+                                                Debug.Log("Picking up my bridge");
+                                                g.GetComponent<MeshRenderer>().enabled = false;
+                                                bridges.Remove(b);
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    else
+                    {
+
+                        if (Input.GetKeyDown(KeyCode.W) && currPlayer.location.bridges[0] != null)
+                        {
+                            currPlayer.location = map[currPlayer.location.x, currPlayer.location.y - 1];
+                            if (currPlayer.goal.Equals(currPlayer.location))
+                            {
+                                currPlayer.points++;
+                                //p.goal = new Tile()
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.D) && currPlayer.location.bridges[1] != null)
+                        {
+                            currPlayer.location = map[currPlayer.location.x + 1, currPlayer.location.y];
+                            if (currPlayer.goal.Equals(currPlayer.location))
+                            {
+                                currPlayer.points++;
+                                //p.goal = new Tile()
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.S) && currPlayer.location.bridges[2] != null)
+                        {
+                            currPlayer.location = map[currPlayer.location.x, currPlayer.location.y + 1];
+                            if (currPlayer.goal.Equals(currPlayer.location))
+                            {
+                                currPlayer.points++;
+                                //p.goal = new Tile()
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.A) && currPlayer.location.bridges[3] != null)
+                        {
+                            currPlayer.location = map[currPlayer.location.x - 1, currPlayer.location.y];
+                            if (currPlayer.goal.Equals(currPlayer.location))
+                            {
+                                currPlayer.points++;
+                                //p.goal = new Tile()
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                        {
+                            bridgePlacingPhase = true;
+                            curPlayer++;
+                            if (curPlayer > numPlayers - 1)
+                                curPlayer = 0;
+                        }
+                    }
+
                 }
+
             }
-            else
-            {
-
-                if (Input.GetKeyDown(KeyCode.W) && currPlayer.location.bridges[0] != null)
-                {
-                    currPlayer.location = map[currPlayer.location.x, currPlayer.location.y - 1];
-                    if (currPlayer.goal.Equals(currPlayer.location))
-                    {
-                        currPlayer.points++;
-                        //p.goal = new Tile()
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.D) && currPlayer.location.bridges[1] != null)
-                {
-                    currPlayer.location = map[currPlayer.location.x + 1, currPlayer.location.y];
-                    if (currPlayer.goal.Equals(currPlayer.location))
-                    {
-                        currPlayer.points++;
-                        //p.goal = new Tile()
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.S) && currPlayer.location.bridges[2] != null)
-                {
-                    currPlayer.location = map[currPlayer.location.x, currPlayer.location.y + 1];
-                    if (currPlayer.goal.Equals(currPlayer.location))
-                    {
-                        currPlayer.points++;
-                        //p.goal = new Tile()
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.A) && currPlayer.location.bridges[3] != null)
-                {
-                    currPlayer.location = map[currPlayer.location.x - 1, currPlayer.location.y];
-                    if (currPlayer.goal.Equals(currPlayer.location))
-                    {
-                        currPlayer.points++;
-                        //p.goal = new Tile()
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
-                {
-                    bridgePlacingPhase = true;
-                    curPlayer++;
-                    if (curPlayer > numPlayers - 1)
-                        curPlayer = 0;
-                }
-            }
-
-        }
-
     }
 }
