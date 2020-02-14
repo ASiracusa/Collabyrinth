@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Tile
 {
-    private int x;
-    private int y;
-    private Bridge[] bridges;
+    public int x;
+    public int y;
+    public Bridge[] bridges;
 
     public Tile(int ix, int iy)
     {
