@@ -5,7 +5,6 @@ using UnityEngine;
 public class Tile
 {
     private int x;
-
     private int y;
     private Bridge[] bridges;
 
@@ -23,4 +22,12 @@ public class Tile
         bridges[direction] = bridge;
     }
     //Sets the bridge spot to the given Bridge.Should be called next to the paired Tile.
+
+    /*
+    public Bridge getBridge(int direction)
+    {
+        return bridges[direction];
+    }
+    //Gets the bridge spot to the given Bridge.Should be called next to the paired Tile.
+    */
 }
