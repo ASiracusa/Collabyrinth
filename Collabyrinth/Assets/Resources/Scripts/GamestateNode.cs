@@ -36,12 +36,31 @@ public class GamestateNode : IComparable<GamestateNode>
             return 0;
 
         return -1;
-    }
+    }/*
+    public ArrayList<GamestateNode> GetAllMoves(Player p)
+    {
+        ArrayList<GamestateNode> moves=new ArrayList();
+        for(int i;i<length;i++)
+        {
+            GamestateNode temp = //somthng
+            for(int j;j<length;j++)
+            {
+                temp//
+                for(int k;k<length;k++)
+                {
+                    temp//
+                    while(!moves.Contains(temp)){
+                        moves.
+                    }
+                }
+            }
+        }
+    }*/
 
     //bridge = -1 --> move player, bridge != 1 --> move bridge
     public GamestateNode next(Player p, int[] pos, int moveBridge)
     {
-       GamestateNode copy;
+       GamestateNode copy=new Tile[length,length];
        for(int i=0;i<length;i++)
        {
            for(int j=0;j<length;j++)
