@@ -37,19 +37,19 @@ public class GameManager : MonoBehaviour
         Debug.Log("Goal" + players[0].goal.x + "," + players[0].goal.y);
         if (players.Length >= 2)
         {
-            players[1] = new Player(1, map[x - 1, y - 1], Instantiate(player, new Vector3(x * 2, 1, y * 2), Quaternion.identity));
+            players[1] = new Player(1, map[x - 1, y - 1], Instantiate(player, new Vector3((x-1) * 2, 1, (y-1) * 2), Quaternion.identity));
             curPlayer = 1;
             SetNewGoal();
         }
         if (players.Length >= 3)
         {
-            players[2] = new Player(2, map[0, y - 1], Instantiate(player, new Vector3(0, 1, y * 2), Quaternion.identity));
+            players[2] = new Player(2, map[0, y - 1], Instantiate(player, new Vector3(0, 1, (y - 1) * 2), Quaternion.identity));
             curPlayer = 2;
             SetNewGoal();
         }
         if (players.Length >= 4)
         {
-            players[3] = new Player(3, map[x - 1, 0], Instantiate(player, new Vector3(x * 2, 1, 0), Quaternion.identity));
+            players[3] = new Player(3, map[x - 1, 0], Instantiate(player, new Vector3((x - 1) * 2, 1, 0), Quaternion.identity));
             curPlayer = 3;
             SetNewGoal();
         }
