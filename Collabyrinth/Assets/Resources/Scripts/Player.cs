@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Player
 {
-    public int[] pos;
+    public int[,] pos;
     public bool isAI;
     public string name;
-    public int[] goal;
+    public int[,] goal;
     public int numBridges;
     public int points;
     public Player(int xPos, int yPos, bool AI, string name, int goalX, int goalY)
