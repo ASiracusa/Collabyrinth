@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player
 {
-    // Start is called before the first frame update
-    void Start()
+    public int[] pos;
+    public bool isAI;
+    public string name;
+    public int[] goal;
+    public int numBridges;
+    public Player(int xPos, int yPos, bool AI, string name, int goalX, int goalY)
     {
-        
+        pos=new int[xPos,yPos];
+        isAI=AI;
+        this.name=name;
+        goal=new int[goalX,goalY];
+        numBridges=3;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

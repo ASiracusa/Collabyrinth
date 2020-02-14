@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Tile
 {
-    public Player player;
     public bool exists;
     public Player[] bridge;
     public int[] pos;
@@ -13,9 +12,8 @@ public class Tile
     public readonly int DOWN= 2;
     public readonly int LEFT= 3;
 
-    public Tile(int row, int col, bool ex, Player pp)
+    public Tile(int row, int col, bool ex)
     {
-        player=pp;
         pos= new int[] {row, col};
         exists=ex;
         bridge= new Player[4];
