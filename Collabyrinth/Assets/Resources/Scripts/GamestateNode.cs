@@ -49,7 +49,7 @@ public class GamestateNode : IComparable<GamestateNode>
     public GamestateNode top()
     {
         GamestateNode p = parent;
-        if (p != null && p.depth != 1)
+        while (p != null && p.depth != 1)
             p = p.parent;
 
         return p;
