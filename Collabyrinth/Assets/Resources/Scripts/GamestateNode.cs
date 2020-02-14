@@ -58,6 +58,7 @@ public class GamestateNode : IComparable<GamestateNode>
     }*/
 
     //bridge = -1 --> move player, bridge != 1 --> move bridge
+    /*
     public GamestateNode next(Player p, int[] pos, int moveBridge)
     {
        GamestateNode copy=new Tile[length,length];
@@ -74,6 +75,7 @@ public class GamestateNode : IComparable<GamestateNode>
                 copy[pos[0],pos[1]]=copy[pos[0],pos[1]].PutBridge(moveBridge, p);
         }
     }
+    */
 
     //return to where depth = 1, return parent at this depth
     public GamestateNode top()
