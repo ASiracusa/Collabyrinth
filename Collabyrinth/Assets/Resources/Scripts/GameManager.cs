@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         players[0] = new Player(0, map[0, 0], Instantiate(player, new Vector3(0, 1, 0), Quaternion.identity));
         curPlayer = 0;
         SetNewGoal();
-        Debug.Log(players[0].goal.x + "," + players[0].goal.y);
+        Debug.Log("Goal" + players[0].goal.x + "," + players[0].goal.y);
         if (players.Length >= 2)
         {
             players[1] = new Player(1, map[x - 1, y - 1], Instantiate(player, new Vector3(x * 2, 1, y * 2), Quaternion.identity));
@@ -209,6 +209,9 @@ public class GameManager : MonoBehaviour
                     {
                        p.points++;
                         SetNewGoal();
+                        Debug.Log("POINT");
+                        Debug.Log("Goal" + players[0].goal.x + "," + players[0].goal.y);
+
                     }
                     bridgePlacingPhase = true;
                     foreach(Tile t in validTiles)
