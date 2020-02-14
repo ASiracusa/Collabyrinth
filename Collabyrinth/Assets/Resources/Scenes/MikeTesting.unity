@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 874035573}
   - component: {fileID: 874035572}
   - component: {fileID: 874035574}
-  - component: {fileID: 874035571}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -140,19 +139,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &874035571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874035570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582b4ac57b944fa40a88013da7e13d27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mat: {fileID: 2100000, guid: e9cb0eaaba5d02e4a9214ebfab22d84d, type: 2}
 --- !u!20 &874035572
 Camera:
   m_ObjectHideFlags: 0
@@ -675,9 +661,9 @@ MonoBehaviour:
   x: 5
   y: 5
   tile: {fileID: 1896488898531844054, guid: 4884d0796b117a842a10a97298203c21, type: 3}
-  player: {fileID: 4916712635051777995, guid: d74bcb95032534c4d8c37c92ba47bc30, type: 3}
+  player: {fileID: 3623369780521321731, guid: 4a59db03819a6b44ea92c2a48102b640, type: 3}
   bridge: {fileID: 7897058645014620773, guid: 2a557f3fc8638784785df9ca7276ee80, type: 3}
-  numPlayers: 1
+  numPlayers: 4
 --- !u!4 &2089575446
 Transform:
   m_ObjectHideFlags: 0

@@ -19,39 +19,69 @@ public class GameManager : MonoBehaviour
     private bool bridgePlacingPhase;
     private List<Tile> validTiles;
     private int bridgesOwned;
-
+    private System.Random r;
     void Start()
     {
+        r = new System.Random();
         map = new Tile[x, y];
         for (int i = 0; i < x; i++)
         {
             for (int j = 0; j < y; j++)
             {
-                map[i, j] = new Tile(i, j, Instantiate(tile, new Vector3(i * 2, 0, j * 2), Quaternion.identity));
+                GameObject g = Instantiate(tile, new Vector3(i * 2, -20, j * 2), Quaternion.identity);
+                map[i, j] = new Tile(i, j, g);
+                Material[] mats = g.GetComponent<MeshRenderer>().materials;
+                mats[0] = Resources.Load("Shaders/TowerMat") as Material;
+                g.GetComponent<MeshRenderer>().materials = mats;
+                StartCoroutine(RaiseTile(g, (i * (float)Math.Sqrt(map.Length) + j) / 10));
             }
         }
         players = new Player[numPlayers];
-        players[0] = new Player(0, map[0, 0], Instantiate(player, new Vector3(0, 1, 0), Quaternion.identity));
+        if (players.Length >= 1) {
+        GameObject g = Instantiate(player, new Vector3(0, 1, 0), Quaternion.identity);
+        Material[] mats = g.transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+        mats[0] = Resources.Load("Shaders/Player1Mat") as Material;
+        g.transform.GetChild(0).GetComponent<MeshRenderer>().materials = mats;
+        players[0] = new Player(0, map[0, 0], g);
         curPlayer = 0;
         SetNewGoal();
+        Material[] goalmats = players[0].goal.tile.GetComponent<MeshRenderer>().materials;
+        goalmats[0] = Resources.Load("Shaders/Player1Mat") as Material;
+        players[0].goal.tile.GetComponent<MeshRenderer>().materials = goalmats;
+        }
         Debug.Log("Goal" + players[0].goal.x + "," + players[0].goal.y);
         if (players.Length >= 2)
         {
-            players[1] = new Player(1, map[x - 1, y - 1], Instantiate(player, new Vector3((x-1) * 2, 1, (y-1) * 2), Quaternion.identity));
+            GameObject go = Instantiate(player, new Vector3((x - 1) * 2, 1, (y - 1) * 2), Quaternion.identity);
+            Material[] mats = go.transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+            mats[0] = Resources.Load("Shaders/Player2Mat") as Material;
+            go.transform.GetChild(0).GetComponent<MeshRenderer>().materials = mats;
+            players[1] = new Player(1, map[x - 1, y - 1], go);
             curPlayer = 1;
             SetNewGoal();
+            Debug.Log("Goal" + players[1].goal.x + "," + players[1].goal.y);
         }
         if (players.Length >= 3)
         {
-            players[2] = new Player(2, map[0, y - 1], Instantiate(player, new Vector3(0, 1, (y - 1) * 2), Quaternion.identity));
+            GameObject go = Instantiate(player, new Vector3(0, 1, (y - 1) * 2), Quaternion.identity);
+            Material[] mats = go.transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+            mats[0] = Resources.Load("Shaders/Player3Mat") as Material;
+            go.transform.GetChild(0).GetComponent<MeshRenderer>().materials = mats;
+            players[2] = new Player(2, map[0, y - 1], go);
             curPlayer = 2;
             SetNewGoal();
+            Debug.Log("Goal" + players[2].goal.x + "," + players[2].goal.y);
         }
         if (players.Length >= 4)
         {
-            players[3] = new Player(3, map[x - 1, 0], Instantiate(player, new Vector3((x - 1) * 2, 1, 0), Quaternion.identity));
+            GameObject go = Instantiate(player, new Vector3((x - 1) * 2, 1, 0), Quaternion.identity);
+            Material[] mats = go.transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+            mats[0] = Resources.Load("Shaders/Player4Mat") as Material;
+            go.transform.GetChild(0).GetComponent<MeshRenderer>().materials = mats;
+            players[3] = new Player(3, map[x - 1, 0], go);
             curPlayer = 3;
             SetNewGoal();
+            Debug.Log("Goal" + players[3].goal.x + "," + players[3].goal.y);
         }
 
 
@@ -98,11 +128,13 @@ public class GameManager : MonoBehaviour
         if (p.points > 3)
         {
             Debug.Log(players[curPlayer] + "wins");
+            Application.Quit();
         }
         else
         {
             if (bridgePlacingPhase)
             {
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     RaycastHit hit;
@@ -117,6 +149,9 @@ public class GameManager : MonoBehaviour
                                 if (bridgesOwned < 3)
                                 {
                                     g.GetComponent<MeshRenderer>().enabled = true;
+                                    Material[] mats = g.GetComponent<MeshRenderer>().materials;
+                                    mats[0] = Resources.Load("Shaders/Player" + (curPlayer + 1) + "Mat") as Material;
+                                    g.GetComponent<MeshRenderer>().materials = mats;
                                     bridges.Add(new Bridge(p, g));
                                 }
                             }
@@ -145,43 +180,6 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                /*
-                if (Input.GetKeyDown(KeyCode.W) && p.location.bridges[0] != null)
-                {
-                    p.location = map[p.location.x, p.location.y - 1];
-                    if (p.goal.Equals(p.location))
-                    {
-                        p.points++;
-                        //p.goal = new Tile()
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.D) && p.location.bridges[1] != null)
-                {
-                    p.location = map[p.location.x + 1, p.location.y];
-                    if (p.goal.Equals(p.location))
-                    {
-                        p.points++;
-                        //p.goal = new Tile()
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.S) && p.location.bridges[2] != null)
-                {
-                    p.location = map[p.location.x, p.location.y + 1];
-                    if (p.goal.Equals(p.location))
-                    {
-                        p.points++;
-                        //p.goal = new Tile()
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.A) && p.location.bridges[3] != null)
-                {
-                    p.location = map[p.location.x - 1, p.location.y];
-                    if (p.goal.Equals(p.location))
-                    {
-                        p.points++;
-                        //p.goal = new Tile()
-                    }
-                }*/
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -205,6 +203,10 @@ public class GameManager : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    Material[] mats = p.goal.tile.GetComponent<MeshRenderer>().materials;
+                    mats[0] = Resources.Load("Shaders/TowerMat") as Material;
+                    p.goal.tile.GetComponent<MeshRenderer>().materials = mats;
+
                     if (p.location.Equals(p.goal))
                     {
                        p.points++;
@@ -219,6 +221,12 @@ public class GameManager : MonoBehaviour
                     curPlayer++;
                     if (curPlayer > numPlayers - 1)
                         curPlayer = 0;
+
+                    p = players[curPlayer];
+                    mats = p.goal.tile.GetComponent<MeshRenderer>().materials;
+                    mats[0] = Resources.Load("Shaders/Player" + (curPlayer + 1) + "Mat") as Material;
+                    p.goal.tile.GetComponent<MeshRenderer>().materials = mats;
+
                     Debug.Log("Next player, switched to bridges");
                 }
 
@@ -274,15 +282,28 @@ public class GameManager : MonoBehaviour
 
     public void SetNewGoal()
     {
-        System.Random r = new System.Random();
         int randx = r.Next(0, map.Length/y);
         int randy = r.Next(0, map.Length/x);
-        while (Math.Abs(randx - players[curPlayer].location.x) + Math.Abs(randy - players[curPlayer].location.y) <= 1)
+        while (Math.Abs(randx - players[curPlayer].location.x) + Math.Abs(randy - players[curPlayer].location.y) < 1)
         {
             randx = r.Next(0, map.Length/y);
             randy = r.Next(0, map.Length/x);
         }
 
         players[curPlayer].SetGoal(map[randx, randy]);
+    }
+
+    private IEnumerator RaiseTile (GameObject tileObject, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float t = 0;
+        while (t < 1f)
+        {
+            tileObject.transform.position = Vector3.Lerp(tileObject.transform.position, new Vector3(tileObject.transform.position.x, -4f, tileObject.transform.position.z), 0.02f);
+            t += 0.005f;
+            yield return new WaitForSeconds(0.005f);
+        }
+        yield return null;
     }
 }
