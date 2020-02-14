@@ -69,13 +69,13 @@ public class GameManager : MonoBehaviour
     {
         Player p = players[curPlayer];
         int bridgesOwned = 0;
-        foreach (Bridge b in bridges)
+        if (bridges.Count>0){ foreach (Bridge b in bridges)
         {
             if (b.getPlayer().Equals(p))
             {
                 bridgesOwned++;
             }
-        }
+        } }
         if (p.points > 3)
         {
             Debug.Log(players[curPlayer] + "wins");
