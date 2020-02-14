@@ -121,9 +121,10 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                if (Input.GetKeyDown(KeyCode.E))
                 {
                     bridgePlacingPhase = false;
+                    Debug.Log("Switched to movement");
                 }
             }
             else
@@ -165,12 +166,13 @@ public class GameManager : MonoBehaviour
                         //p.goal = new Tile()
                     }
                 }*/
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                if (Input.GetKeyDown(KeyCode.E))
                 {
                     bridgePlacingPhase = true;
                     curPlayer++;
                     if (curPlayer > numPlayers - 1)
                         curPlayer = 0;
+                    Debug.Log("Next player, switched to bridges");
                 }
 
                 CheckPath(players[curPlayer].location, new List<Tile>());
@@ -193,25 +195,25 @@ public class GameManager : MonoBehaviour
         // a) connected by a bridge and
         // b) not already visited
         // After all is done, all of the connected Tiles will be in validTiles
-        if (map[tile.x, tile.y].bridges[0].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y - 1].encountered)
+        if (map[tile.x, tile.y].bridges[0] != null && map[tile.x, tile.y].bridges[0].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y - 1].encountered)
         {
             map[tile.x, tile.y - 1].predecessor = 2;
             CheckPath(map[tile.x, tile.y - 1], validTiles);
         }
 
-        if (map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && !map[tile.x + 1, tile.y].encountered)
+        if (map[tile.x, tile.y].bridges[1] != null && map[tile.x, tile.y].bridges[1].GetComponent<MeshRenderer>().enabled && !map[tile.x + 1, tile.y].encountered)
         {
             map[tile.x + 1, tile.y].predecessor = 3;
             CheckPath(map[tile.x + 1, tile.y], validTiles);
         }
 
-        if (map[tile.x, tile.y].bridges[2].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y + 1].encountered)
+        if (map[tile.x, tile.y].bridges[2] != null && map[tile.x, tile.y].bridges[2].GetComponent<MeshRenderer>().enabled && !map[tile.x, tile.y + 1].encountered)
         {
             map[tile.x, tile.y + 1].predecessor = 0;
             CheckPath(map[tile.x, tile.y + 1], validTiles);
         }
 
-        if (map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && !map[tile.x - 1, tile.y].encountered)
+        if (map[tile.x, tile.y].bridges[3] != null && map[tile.x, tile.y].bridges[3].GetComponent<MeshRenderer>().enabled && !map[tile.x - 1, tile.y].encountered)
         {
             map[tile.x - 1, tile.y].predecessor = 1;
             CheckPath(map[tile.x - 1, tile.y], validTiles);
