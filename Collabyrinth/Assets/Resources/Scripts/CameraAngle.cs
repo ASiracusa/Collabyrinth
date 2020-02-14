@@ -22,7 +22,7 @@ public class CameraAngle : MonoBehaviour
             {
                 transform.Translate(speed, 0, speed);
             }
-            else { transform.position = new Vector3(7f, transform.position.y, 12f); }
+           // else { transform.position = new Vector3(5f, transform.position.y, 8f); }
         }
 
         if (Input.GetKey("a"))
@@ -31,7 +31,7 @@ public class CameraAngle : MonoBehaviour
             {
                 transform.Translate(-speed, 0, speed);
             }
-                else { transform.position = new Vector3(0f, transform.position.y, 12f); }
+               // else { transform.position = new Vector3(5f, transform.position.y, 8f); }
 
         }
 
@@ -41,7 +41,7 @@ public class CameraAngle : MonoBehaviour
             {
                 transform.Translate(-speed, 0, -speed);
              }
-            else { transform.position = new Vector3(-0f, transform.position.y, 1f); }
+           // else { transform.position = new Vector3(5f, transform.position.y, 8f); }
 
         }
 
@@ -51,10 +51,10 @@ public class CameraAngle : MonoBehaviour
             {
                 transform.Translate(speed, 0, -speed);
             }
-            else
-            {
-                transform.position = new Vector3(7f, transform.position.y, 1f);
-            }
+          //  else
+           // {
+            //    transform.position = new Vector3(5f, transform.position.y, 8f);
+         //   }
         }
 
         
