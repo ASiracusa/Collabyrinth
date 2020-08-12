@@ -11,14 +11,17 @@ public class GameManager : MonoBehaviour
     public GameObject tile;
     public GameObject player;
     public GameObject bridge;
+    public GameObject wall;
     public int numPlayers;
     private Tile[,] map;
     private Player[] players;
     private List<Bridge> bridges;
+    private List<Wall> walls;
     private int curPlayer;
     private bool bridgePlacingPhase;
-    private List<Tile> validTiles;
     private int bridgesOwned;
+    private int wallsOwned;
+    private List<Tile> validTiles;
     private System.Random r;
     void Start()
     {
@@ -106,7 +109,29 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        for (int i = 0; i < x; i++)
+        {
+            for (int j = 0; j < y - 1; j++)
+            {
+                GameObject g = Instantiate(wall, new Vector3(i * 2, 1, j * 2 + 1), Quaternion.Euler(0, 90, 0));
+                g.GetComponent<MeshRenderer>().enabled = false;
+                map[i, j].walls[2] = g;
+                map[i, j + 1].walls[0] = g;
+            }
+        }
+        for (int i = 0; i < y; i++)
+        {
+            for (int j = 0; j < x - 1; j++)
+            {
+                GameObject g = Instantiate(wall, new Vector3(j * 2 + 1, 1, i * 2), Quaternion.identity);
+                g.GetComponent<MeshRenderer>().enabled = false;
+                map[j, i].walls[3] = g;
+                map[j + 1, i].walls[1] = g;
+            }
+        }
+
         bridges = new List<Bridge>();
+        walls = new List<Wall>();
         curPlayer = 0;
         bridgePlacingPhase = true;
     }
@@ -115,6 +140,7 @@ public class GameManager : MonoBehaviour
     {
         Player p = players[curPlayer];
         bridgesOwned = 0;
+        wallsOwned = 0;
         if (bridges.Count > 0)
         {
             foreach (Bridge b in bridges)
@@ -122,6 +148,16 @@ public class GameManager : MonoBehaviour
                 if (b.getPlayer().Equals(p))
                 {
                     bridgesOwned++;
+                }
+            }
+        }
+        if (walls.Count > 0)
+        {
+            foreach (Wall w in walls)
+            {
+                if (w.getPlayer().Equals(p))
+                {
+                    wallsOwned++;
                 }
             }
         }
@@ -171,7 +207,44 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.E) && bridgesOwned == 3)
+                if (Input.GetMouseButtonDown(1))
+                {
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out hit, 100.0f))
+                    {
+                        if (hit.transform.gameObject.tag.Equals("Wall"))
+                        {
+                            GameObject g = hit.transform.gameObject;
+                            if (!g.GetComponent<MeshRenderer>().enabled)
+                            {
+                                if (wallsOwned == 0)
+                                {
+                                    g.GetComponent<MeshRenderer>().enabled = true;
+                                    Material[] mats = g.GetComponent<MeshRenderer>().materials;
+                                    mats[0] = Resources.Load("Shaders/Player" + (curPlayer + 1) + "Mat") as Material;
+                                    g.GetComponent<MeshRenderer>().materials = mats;
+                                    walls.Add(new Wall(p, g));
+                                }
+                            }
+                            else
+                            {
+                                foreach (Wall w in walls)
+                                {
+                                    if (w.wall.Equals(g) && (w.getPlayer().Equals(p)))
+                                    {
+                                        g.GetComponent<MeshRenderer>().enabled = false;
+                                        walls.Remove(w);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                if (Input.GetKeyDown(KeyCode.E) && bridgesOwned == 3 && wallsOwned == 1)
                 {
                     bridgePlacingPhase = false;
                     Debug.Log("Switched to movement");

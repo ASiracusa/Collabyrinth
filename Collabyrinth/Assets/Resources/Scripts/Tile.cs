@@ -8,6 +8,7 @@ public class Tile
     public int y;
     public GameObject tile;
     public GameObject[] bridges;
+    public GameObject[] walls;
     public bool encountered;
     public int predecessor;
 
@@ -17,6 +18,7 @@ public class Tile
         y = iy;
         this.tile = tile;
         bridges = new GameObject[4];
+        walls = new GameObject[4];
         encountered = false;
 
     }
